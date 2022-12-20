@@ -10,6 +10,15 @@ export const useShopList = () => {
   return useQuery(['shops'], shoplist);
 };
 
+export const useProducts = id => {
+  const listProducts = async () => {
+    const resp = await fetchSinToken('product/sintkn', { id }, 'POST');
+    const data = await resp.json();
+    return data;
+  };
+  return useQuery(['listproducts'], listProducts);
+};
+
 export const useMutateAddProduct = (id = null) => {
   const queryClient = useQueryClient();
 
@@ -75,15 +84,6 @@ export const useMutateEnabledAll = () => {
       // return necesario para que espere a que termine invalidate y luego renderizar la lista en el onsuccess de mutate fn.
     },
   });
-};
-
-export const useProducts = id => {
-  const listProducts = async () => {
-    const resp = await fetchConToken('product/products', { id }, 'GET');
-    const data = await resp.json();
-    return data;
-  };
-  return useQuery(['listproducts'], listProducts);
 };
 
 export const useProduct = id => {

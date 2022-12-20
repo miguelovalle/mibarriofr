@@ -7,14 +7,13 @@ import {
   Spinner,
   LinkBox,
   LinkOverlay,
-  Box,
 } from '@chakra-ui/react';
 import { useShopList } from '../../hooks/shopHooks';
 
 export const ShopList = () => {
+  
   const { isLoading, isError, data, error, isSuccess } = useShopList();
   const shops = data?.commerces;
-  console.log(shops);
   if (isLoading) {
     return <Spinner />;
   }
@@ -24,9 +23,9 @@ export const ShopList = () => {
   if (isSuccess) {
     return (
       <Flex direction="column" w="full">
-        <LinkBox>
-          <Flex wrap="wrap">
-            {shops.map(negocio => (
+        <Flex wrap="wrap">
+          {shops.map(negocio => (
+            <LinkBox>
               <Flex
                 justify="flex-start"
                 w="400px"
@@ -46,17 +45,17 @@ export const ShopList = () => {
                   />
 
                   <VStack w="300px">
-                    <LinkOverlay href={`/${shops._id}`}>
-                      <Text fontSize="xl"> {negocio.name}</Text>
+                    <LinkOverlay href={`shops/${negocio._id}`}>
+                      {negocio.name}
                     </LinkOverlay>
                     <Text fontSize="small">{negocio.specialty}</Text>
                     <Text fontSize="small">{negocio.cross}</Text>
                   </VStack>
                 </Flex>
               </Flex>
-            ))}
-          </Flex>
-        </LinkBox>
+            </LinkBox>
+          ))}
+        </Flex>
       </Flex>
     );
   }

@@ -1,5 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { fetchConToken } from '../helpers/fetch';
+import { fetchConToken, fetchSinToken } from '../helpers/fetch';
+
+export const useProducts = shopId => {
+  const listProducts = async () => {
+    const resp = await fetchSinToken('product/sintkn', { shopId }, 'GET');
+    const data = await resp.json();
+    return data;
+  };
+  return useQuery(['listproducts'], listProducts);
+};
 
 export const useMutateAddProduct = (id = null) => {
   const queryClient = useQueryClient();
@@ -73,15 +82,6 @@ export const useMutateEnabledAll = () => {
       // return necesario para que espere a que termine invalidate y luego renderizar la lista en el onsuccess de mutate fn.
     },
   });
-};
-
-export const useProducts = id => {
-  const listProducts = async () => {
-    const resp = await fetchConToken('product', { id }, 'GET');
-    const data = await resp.json();
-    return data;
-  };
-  return useQuery(['listproducts'], listProducts);
 };
 
 export const useProduct = id => {

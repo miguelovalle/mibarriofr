@@ -18,13 +18,13 @@ export const AppRouter = () => {
         <Route path="/landing" element={<LandingScreen />} />
         <Route path="/map" element={<Gmap />} />
         <Route path="/regaddress" element={<AddressModal />} />
-        <Route path="products" element={<ProductList />} />
       </Routes>
 
       <Routes>
         <Route path="/" element={<HeaderBar />}>
           <Route index element={<ShopList />} />
           <Route path="shops" element={<ShopList />} />
+          <Route path="shops/:shopId" element={<ProductList />} />
         </Route>
       </Routes>
     </BrowserRouter>

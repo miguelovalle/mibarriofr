@@ -1,11 +1,21 @@
 import React from 'react';
 import { Image, Text, Flex, VStack, Spinner } from '@chakra-ui/react';
 import { useProducts } from '../../hooks/shopHooks';
+import { useParams } from 'react-router-dom';
+import { numberFormat } from '../../helpers/numberFormat';
 
 export const ProductList = () => {
-  const { isLoading, data, isError, isSuccess, error } = useProducts();
-  const products = data?.products;
+  const { shopId } = useParams();
 
+  const { isLoading, data, isError, isSuccess, error } = useProducts(shopId);
+
+  const formatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+  });
+
+  const products = data?.products;
   if (isLoading) {
     return <Spinner />;
   }
@@ -14,11 +24,15 @@ export const ProductList = () => {
     //`error: ${error}`;
   }
   if (isSuccess) {
+    if (data.ok === 'false') {
+      return console.log('no hay productos');
+    }
+
     return (
       <Flex direction="column" w="full">
-        <h1>lisyta de prodcutos</h1>
+        <h1>lista de prodcutos</h1>
         <Flex wrap="wrap">
-          {products.map(item => (
+          {products?.map(item => (
             <Flex
               justify="flex-start"
               w="400px"
@@ -33,13 +47,13 @@ export const ProductList = () => {
                   boxSize="100px"
                   objectFit="cover"
                   borderRadius="lg"
-                  src={item.imgName}
-                  alt={item.nombre}
+                  src={item.logo}
+                  alt={item.logo}
                 />
                 <VStack w="300px">
                   <Text fontSize="xl">{item.name}</Text>
-                  <Text fontSize="small">{item.specialty}</Text>
-                  <Text fontSize="small">{item.cross}</Text>
+                  <Text fontSize="small">{item.description}</Text>
+                  <Text fontSize="small">{numberFormat(item.price)}</Text>
                 </VStack>
               </Flex>
             </Flex>
